@@ -1,0 +1,146 @@
+MPASM  5.39                       TRAFFIC.ASM   9-21-2018  11:45:26         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+  00000001            00001 TMR0            EQU     1
+  00000003            00002 STATUS          EQU     3
+  00000005            00003 PORTA           EQU     5
+  00000006            00004 PORTB           EQU     6
+  00000085            00005 TRISA           EQU     85H
+  00000086            00006 TRISB           EQU     86H
+  00000081            00007 OPTION_R        EQU     81H
+  00000002            00008 ZEROBIT         EQU     2
+  00000000            00009 CARRYBIT        EQU     0
+  0000000C            00010 COUNT           EQU     0CH
+                      00011 
+Warning[205]: Found directive in column 1. (LIST)
+                      00012 LIST P=16f84a
+Warning[205]: Found directive in column 1. (ORG)
+0000                  00013 ORG 0
+Warning[203]: Found opcode in column 1. (GOTO)
+0000   2807           00014 GOTO START
+                      00015 
+                      00016 
+                      00017 
+                      00018 ;**************************************************************
+Warning[205]: Found directive in column 1. (__CONFIG)
+2007   3FF0           00019 __CONFIG H'3FF0'
+                      00020 
+                      00021 ;**************************************************************
+                      00022 ; SUBROUTINE
+                      00023 
+0001   0181           00024 DELAY5          CLRF    TMR0
+0002   0801           00025 LOOPA           MOVF    TMR0,W
+0003   3CA0           00026                 SUBLW   .160
+0004   1D03           00027                 BTFSS   STATUS,ZEROBIT
+0005   2802           00028                 GOTO    LOOPA
+0006   3400           00029                 RETLW   0
+                      00030 
+                      00031 ;***************************************************************
+                      00032 
+0007   1683           00033 START           BSF     STATUS,5
+0008   301F           00034                 MOVLW   B'00011111'
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0009   0085           00035                 MOVWF   TRISA
+                      00036                 
+000A   3000           00037                 MOVLW   B'00000000'
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+000B   0086           00038                 MOVWF   TRISB
+                      00039                 
+000C   3007           00040                 MOVLW   B'00000111'
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+000D   0081           00041                 MOVWF   OPTION_R
+                      00042 
+000E   1283           00043                 BCF     STATUS,5
+000F   0185           00044                 CLRF    PORTA
+0010   0186           00045                 CLRF    PORTB
+                      00046 
+MPASM  5.39                       TRAFFIC.ASM   9-21-2018  11:45:26         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00047 ;***************************************************************
+                      00048 
+0011   3024           00049 BEGIN           MOVLW   B'00100100'
+0012   0086           00050                 MOVWF   PORTB
+                      00051                 
+                      00052 
+0013   1805           00053 SW1             BTFSC   PORTA,0
+0014   2817           00054                 GOTO    SW2
+0015   2001           00055                 CALL    DELAY5
+0016   281B           00056                 GOTO    DISPLAY
+                      00057                 
+                      00058 
+0017   1885           00059 SW2             BTFSC   PORTA,1
+0018   2813           00060                 GOTO    SW1
+0019   2001           00061                 CALL    DELAY5
+001A   281B           00062                 GOTO    DISPLAY
+                      00063                 
+                      00064 
+001B   3012           00065 DISPLAY         MOVLW   B'00010010'
+001C   0086           00066                 MOVWF   PORTB
+001D   2001           00067                 CALL    DELAY5
+                      00068 
+                      00069 
+001E   30C9           00070                 MOVLW   B'11001001'
+001F   0086           00071                 MOVWF   PORTB
+0020   2001           00072                 CALL    DELAY5
+0021   2001           00073                 CALL    DELAY5
+                      00074 
+0022   30D2           00075                 MOVLW   B'11010010'
+0023   0086           00076                 MOVWF   PORTB
+0024   2001           00077                 CALL    DELAY5
+                      00078                 
+                      00079 
+0025   3024           00080                 MOVLW   B'00100100'
+0026   0086           00081                 MOVWF   PORTB
+0027   2001           00082                 CALL    DELAY5
+                      00083                 
+Warning[205]: Found directive in column 1. (END)
+                      00084 END      
+MPASM  5.39                       TRAFFIC.ASM   9-21-2018  11:45:26         PAGE  3
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+BEGIN                             00000011
+CARRYBIT                          00000000
+COUNT                             0000000C
+DELAY5                            00000001
+DISPLAY                           0000001B
+LOOPA                             00000002
+OPTION_R                          00000081
+PORTA                             00000005
+PORTB                             00000006
+START                             00000007
+STATUS                            00000003
+SW1                               00000013
+SW2                               00000017
+TMR0                              00000001
+TRISA                             00000085
+TRISB                             00000086
+ZEROBIT                           00000002
+__16F84A                          00000001
+
+
+MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
+
+0000 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXX-------- ----------------
+2000 : -------X-------- ---------------- ---------------- ----------------
+
+All other memory blocks unused.
+
+Program Memory Words Used:    40
+Program Memory Words Free:   984
+
+
+Errors   :     0
+Warnings :     5 reported,     0 suppressed
+Messages :     3 reported,     0 suppressed
+
+
